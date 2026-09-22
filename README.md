@@ -195,7 +195,7 @@ Write 32-bits value 0x00000000 to 0x4000 (0x0x730858462000)
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$
 ```
 ## Testing DDR3
-
+### Channel 0
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ dd if=/dev/urandom of=pattern.bin bs=1M count=16
 16+0 records in
@@ -213,6 +213,26 @@ dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ diff pattern.bin readback.bin && echo "DDR3 CH0: PASS"
 DDR3 CH0: PASS
+```
+
+### Channel 1
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ dd if=/dev/urandom of=pattern.bin bs=1M count=16
+16+0 records in
+16+0 records out
+16777
+```
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_to_device -d /dev/xdma0_h2c_0 -a 0x00000000 -s 16777216 -f pattern.bin
+/dev/xdma0_h2c_0 ** Average BW = 16777216, 1310.044678
+```
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_from_device -d /dev/xdma0_c2h_0 -a 0x00000000 -s 16777216 -f readback_ch1.bin
+/dev/xdma0_c2h_0 ** Average BW = 16777216, 725.923401
+```
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ diff pattern.bin readback_ch1.bin && echo "DDR3 CH1: PASS"
+DDR3 CH1: PASS
 ```
 
 
