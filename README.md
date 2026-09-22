@@ -194,7 +194,25 @@ Memory 0x4000 mapped at address 0x730858462000.
 Write 32-bits value 0x00000000 to 0x4000 (0x0x730858462000)
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$
 ```
+## Testing DDR3
 
-
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ dd if=/dev/urandom of=pattern.bin bs=1M count=16
+16+0 records in
+16+0 records out
+16777216 bytes (17 MB, 16 MiB) copied, 0.03718 s, 451 MB/s
+```
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_to_device -d /dev/xdma0_h2c_0 -a 0x80000000 -s 16777216 -f pattern.bin
+/dev/xdma0_h2c_0 ** Average BW = 16777216, 1328.138062
+```
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_from_device -d /dev/xdma0_c2h_0 -a 0x80000000 -s 16777216 -f readback.bin
+/dev/xdma0_c2h_0 ** Average BW = 16777216, 677.586548
+```
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ diff pattern.bin readback.bin && echo "DDR3 CH0: PASS"
+DDR3 CH0: PASS
+```
 
 
