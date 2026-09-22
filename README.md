@@ -1,18 +1,29 @@
 Rough - TODO
 
+
+## Check if the FPGA is detected
+```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ lspci # Confirm that the FPGA is being detected. In my case:
 05:00.0 Memory controller: Xilinx Corporation Device 7028 # 7028 is the default device ID
-
+```
+## Remove the device if detected
+```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ echo 1 | sudo tee /sys/bus/pci/devices/0000:05:00.0/remove
 [sudo] password for dipen: 
 1
-
-# Program the FPGA now
+```
+## Program the FPGA from Vivado now
+```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ echo 1 | sudo tee /sys/bus/pci/rescan
 1
+```
+### Rescan for the device. The device should have a new device ID
+```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ lspci #Should get new device ID 
 05:00.0 Memory controller: Xilinx Corporation Device 7021 #7021 in my case)
-
+```
+## Detailed capabilities printout
+```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ sudo lspci -vvv -s 05:00.0
 05:00.0 Memory controller: Xilinx Corporation Device 7021
 	Subsystem: Xilinx Corporation Device 0007
@@ -57,7 +68,15 @@ dipen@dipen-ubuntu-mate:~/Desktop$ sudo lspci -vvv -s 05:00.0
 	Capabilities: [100 v1] Device Serial Number 00-00-00-00-00-00-00-00
 	Kernel driver in use: xdma
 	Kernel modules: xdma
+```
+## Download and load the AMD XDMA Drivers
 
+1. Get the AMD Linux XDMA Drivers from: https://github.com/xilinx/dma_ip_drivers
+I used git clone.\
+
+2. Navigate to the directory inside the downloaded drivers and run the commands shown below:
+a.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ ls
 COPYING  include  LICENSE  readme.txt  RELEASE  tests  tools  xdma
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ cd xdma
@@ -65,6 +84,9 @@ dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ ls
 cdev_bypass.c  cdev_ctrl.h    cdev_events.o  cdev_sgdma.o  cdev_xvc.o  libxdma.o      Module.symvers  xdma_cdev.c  xdma.ko     xdma_mod.c  xdma_mod.o     xdma_thread.h
 cdev_bypass.o  cdev_ctrl.o    cdev_sgdma.c   cdev_xvc.c    libxdma.c   Makefile       sudo            xdma_cdev.h  xdma.mod    xdma_mod.h  xdma.o         xdma_thread.o
 cdev_ctrl.c    cdev_events.c  cdev_sgdma.h   cdev_xvc.h    libxdma.h   modules.order  version.h       xdma_cdev.o  xdma.mod.c  xdma.mod.o  xdma_thread.c
+```
+b.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ sudo make clean
 Makefile:17: XVC_FLAGS: .
 make -C /lib/modules/6.8.0-138-generic/build M=/home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma clean
@@ -72,6 +94,9 @@ make[1]: Entering directory '/usr/src/linux-headers-6.8.0-138-generic'
 /home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma/Makefile:17: XVC_FLAGS: .
   CLEAN   /home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma/Module.symvers
 make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-138-generic'
+```
+c.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ sudo make all
 Makefile:17: XVC_FLAGS: .
 make -C /lib/modules/6.8.0-138-generic/build M=/home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma modules
@@ -97,19 +122,29 @@ warning: the compiler differs from the one used to build the kernel
   BTF [M] /home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma/xdma.ko
 Skipping BTF generation for /home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma/xdma.ko due to unavailability of vmlinux
 make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-138-generic'
+```
+c.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ sudo depmod
+```
+d.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ ls
 cdev_bypass.c  cdev_ctrl.h    cdev_events.o  cdev_sgdma.o  cdev_xvc.o  libxdma.o      Module.symvers  xdma_cdev.c  xdma.ko     xdma_mod.c  xdma_mod.o     xdma_thread.h
 cdev_bypass.o  cdev_ctrl.o    cdev_sgdma.c   cdev_xvc.c    libxdma.c   Makefile       sudo            xdma_cdev.h  xdma.mod    xdma_mod.h  xdma.o         xdma_thread.o
 cdev_ctrl.c    cdev_events.c  cdev_sgdma.h   cdev_xvc.h    libxdma.h   modules.order  version.h       xdma_cdev.o  xdma.mod.c  xdma.mod.o  xdma_thread.c
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ cd ,,
-bash: cd: ,,: No such file or directory
+```
+d.
+```
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ cd ..
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ ls
 COPYING  include  LICENSE  readme.txt  RELEASE  tests  tools  xdma
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ cd tests/
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ ls
 data  dma_memory_mapped_test.sh  dma_streaming_test.sh  load_driver.sh  perform_hwcount.sh  run_test.sh  scripts_mm
+```
+e.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ sudo ./load_driver.sh
 interrupt_selection .
 xdma                  110592  0
@@ -117,10 +152,19 @@ Loading driver...insmod xdma.ko interrupt_mode=2 ...
 
 The Kernel module installed correctly and the xmda devices were recognized.
 DONE
+```
+### The XDMA driver was loaded.
+
+### See the available XDMA endpoints
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ ls /dev/xdma*
 /dev/xdma0_c2h_0     /dev/xdma0_events_1   /dev/xdma0_events_12  /dev/xdma0_events_15  /dev/xdma0_events_4  /dev/xdma0_events_7  /dev/xdma0_h2c_0
 /dev/xdma0_control   /dev/xdma0_events_10  /dev/xdma0_events_13  /dev/xdma0_events_2   /dev/xdma0_events_5  /dev/xdma0_events_8  /dev/xdma0_user
 /dev/xdma0_events_0  /dev/xdma0_events_11  /dev/xdma0_events_14  /dev/xdma0_events_3   /dev/xdma0_events_6  /dev/xdma0_events_9  /dev/xdma0_xvc
+```
+## Test if the everything else is working till now by blinking the on-board LEDs
+a.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ cd ..
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ ls
 COPYING  include  LICENSE  readme.txt  RELEASE  tests  tools  xdma
@@ -128,23 +172,28 @@ dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ cd tools/
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ ls
 dma_from_device    dma_from_device.o  dma_to_device.c  dma_utils.c  performance    performance.o  reg_rw.c  test_chrdev    test_chrdev.o
 dma_from_device.c  dma_to_device      dma_to_device.o  Makefile     performance.c  reg_rw         reg_rw.o  test_chrdev.c
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ ./reg_rw /dev/xdma0_user 0x4000_0000 w 0x7
-device: /dev/xdma0_user, address: 0x4000 (0x4000+0x0), access write.
-access width: word (32-bits)
-character device /dev/xdma0_user opened failed: Permission denied.
+```
+### The LED address may be different for you. Refer to the memory address editor to see the addresses assigned to the on-board LEDs
+b. 
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./reg_rw /dev/xdma0_user 0x4000_0000 w 0x7
 device: /dev/xdma0_user, address: 0x4000 (0x4000+0x0), access write.
 access width: word (32-bits)
 character device /dev/xdma0_user opened.
 Memory 0x4000 mapped at address 0x71a1b1b5c000.
 Write 32-bits value 0x00000007 to 0x4000 (0x0x71a1b1b5c000)
+```
+
+c.
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./reg_rw /dev/xdma0_user 0x4000_0000 w 0x0
 device: /dev/xdma0_user, address: 0x4000 (0x4000+0x0), access write.
 access width: word (32-bits)
 character device /dev/xdma0_user opened.
 Memory 0x4000 mapped at address 0x730858462000.
 Write 32-bits value 0x00000000 to 0x4000 (0x0x730858462000)
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ 
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$
+```
 
 
 
