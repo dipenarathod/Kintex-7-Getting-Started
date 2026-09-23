@@ -1,0 +1,34 @@
+vhdl xil_defaultlib  \
+"../../../bd/design_1/sim/design_1.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_core_top.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_axi_basic_rx_null_gen.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_axi_basic_rx_pipeline.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_axi_basic_rx.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_axi_basic_top.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_axi_basic_tx_pipeline.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_axi_basic_tx_thrtl_ctl.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_axi_basic_tx.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_7x.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_bram_7x.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_bram_top_7x.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_brams_7x.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_pipe_lane.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_pipe_misc.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_pipe_pipeline.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_gt_rx_valid_filter_7x.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_gt_top.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie_top.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/source/design_1_xdma_0_2_pcie2_ip_pcie2_top.vhd" \
+"../../../bd/design_1/ip/design_1_xdma_0_2/ip_0/sim/design_1_xdma_0_2_pcie2_ip.vhd" \
+"../../../bd/design_1/ip/design_1_axi_gpio_0_1/sim/design_1_axi_gpio_0_1.vhd" \
+"../../../bd/design_1/ip/design_1_axi_iic_0_0/sim/design_1_axi_iic_0_0.vhd" \
+"../../../bd/design_1/ip/design_1_util_ds_buf_1/util_ds_buf.vhd" \
+"../../../bd/design_1/ip/design_1_util_ds_buf_1/sim/design_1_util_ds_buf_1.vhd" \
+"../../../bd/design_1/ip/design_1_smartconnect_0_0/bd_0/ip/ip_1/sim/bd_48ac_psr0_0.vhd" \
+"../../../bd/design_1/ip/design_1_smartconnect_0_0/bd_0/ip/ip_2/sim/bd_48ac_psr_aclk_0.vhd" \
+"../../../bd/design_1/ip/design_1_smartconnect_0_0/bd_0/ip/ip_3/sim/bd_48ac_psr_aclk1_0.vhd" \
+"../../../bd/design_1/ip/design_1_smartconnect_0_0/bd_0/ip/ip_4/sim/bd_48ac_psr_aclk2_0.vhd" \
+"../../../bd/design_1/ip/design_1_rst_mig_7series_0_133M_3/sim/design_1_rst_mig_7series_0_133M_3.vhd" \
+"../../../bd/design_1/ip/design_1_rst_mig_7series_0_133M_1_2/sim/design_1_rst_mig_7series_0_133M_1_2.vhd" \
+
+nosort
