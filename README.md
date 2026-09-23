@@ -13,11 +13,12 @@ dipen@dipen-ubuntu-mate:~/Desktop$ echo 1 | sudo tee /sys/bus/pci/devices/0000:0
 1
 ```
 ## Program the FPGA from Vivado now
+### Rescan for the device. The device should have a new device ID
 ```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ echo 1 | sudo tee /sys/bus/pci/rescan
 1
 ```
-### Rescan for the device. The device should have a new device ID
+
 ```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ lspci #Should get new device ID 
 05:00.0 Memory controller: Xilinx Corporation Device 7021 #7021 in my case)
@@ -173,7 +174,7 @@ dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ ls
 dma_from_device    dma_from_device.o  dma_to_device.c  dma_utils.c  performance    performance.o  reg_rw.c  test_chrdev    test_chrdev.o
 dma_from_device.c  dma_to_device      dma_to_device.o  Makefile     performance.c  reg_rw         reg_rw.o  test_chrdev.c
 ```
-### The LED address may be different for you. Refer to the memory address editor to see the addresses assigned to the on-board LEDs
+### The LED address may be different for you. Refer to the memory address editor to see the addresses assigned to the on-board LEDs. NOTE: Refer to the address in the PCIe BARs page of the DMA PCIE IP Block. The PCIe to AXI translation value + size determine what addresses you can assign to the LEDs and other peripherals mapped under the AXI-Lite interface of the PCIe DMA IP block. Refer to ```block-design-2-address-editor``` image to see a valid address mapping. Apparently, when using the XDMA drivers (xdma0_user) for testing, you can use the assigned address, or subtract the offset (0x4000_0000) in this tutorial's case.
 b. 
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./reg_rw /dev/xdma0_user 0x4000_0000 w 0x7
