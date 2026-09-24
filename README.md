@@ -1,19 +1,29 @@
-Rough - TODO
+# Repository Description
+Help everyone get started with using Kintex 7 FPGA accelerator cards, such as those from Baidu and Inspur.
+These Kintex 7 cards are a great way to get started with Vivado's PCIe DMA IP block and other features, such as DDR3 RAM.
+I may or may not create another project and an accompanying C++ script to show how to use XDMA drivers with the FPGA card and other features in a program.
+
+Credits to Tiferking's work for making this repository possible. Links to their work:
+- https://github.com/TiferKing/ypcb_00338_1p1_hack
+- https://www.tiferking.cn/index.php/2024/12/19/650/
 
 
-## Check if the FPGA is detected
+## What to do After Installing the FPGA Card
+
+### Check if the FPGA is detected
 ```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ lspci # Confirm that the FPGA is being detected. In my case:
 05:00.0 Memory controller: Xilinx Corporation Device 7028 # 7028 is the default device ID
 ```
-## Remove the device if detected
+### Remove the device if detected
 ```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ echo 1 | sudo tee /sys/bus/pci/devices/0000:05:00.0/remove
-[sudo] password for dipen: 
 1
 ```
-## Program the FPGA from Vivado now
-### Rescan for the device. The device should have a new device ID
+### Program the FPGA from Vivado now
+I suggest using the [**block-design-2**](/vivado-projects/block-design-2) Vivado Project in the vivado-projects directory.
+
+#### Rescan for the Device. The Device Should Have a new Device ID
 ```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ echo 1 | sudo tee /sys/bus/pci/rescan
 1
@@ -23,7 +33,8 @@ dipen@dipen-ubuntu-mate:~/Desktop$ echo 1 | sudo tee /sys/bus/pci/rescan
 dipen@dipen-ubuntu-mate:~/Desktop$ lspci #Should get new device ID 
 05:00.0 Memory controller: Xilinx Corporation Device 7021 #7021 in my case)
 ```
-## Detailed capabilities printout
+
+### Detailed Capabilities Printout
 ```bash
 dipen@dipen-ubuntu-mate:~/Desktop$ sudo lspci -vvv -s 05:00.0
 05:00.0 Memory controller: Xilinx Corporation Device 7021
@@ -70,13 +81,13 @@ dipen@dipen-ubuntu-mate:~/Desktop$ sudo lspci -vvv -s 05:00.0
 	Kernel driver in use: xdma
 	Kernel modules: xdma
 ```
-## Download and load the AMD XDMA Drivers
+### Download and Load the AMD XDMA Drivers
 
 1. Get the AMD Linux XDMA Drivers from: https://github.com/xilinx/dma_ip_drivers
 I used git clone.\
 
 2. Navigate to the directory inside the downloaded drivers and run the commands shown below:
-a.
+a. Show the folders inside the downloaded repository
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ ls
 COPYING  include  LICENSE  readme.txt  RELEASE  tests  tools  xdma
@@ -86,7 +97,7 @@ cdev_bypass.c  cdev_ctrl.h    cdev_events.o  cdev_sgdma.o  cdev_xvc.o  libxdma.o
 cdev_bypass.o  cdev_ctrl.o    cdev_sgdma.c   cdev_xvc.c    libxdma.c   Makefile       sudo            xdma_cdev.h  xdma.mod    xdma_mod.h  xdma.o         xdma_thread.o
 cdev_ctrl.c    cdev_events.c  cdev_sgdma.h   cdev_xvc.h    libxdma.h   modules.order  version.h       xdma_cdev.o  xdma.mod.c  xdma.mod.o  xdma_thread.c
 ```
-b.
+b. Make clean to remove the object files and other build artifacts
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ sudo make clean
 Makefile:17: XVC_FLAGS: .
@@ -96,7 +107,7 @@ make[1]: Entering directory '/usr/src/linux-headers-6.8.0-138-generic'
   CLEAN   /home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma/Module.symvers
 make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-138-generic'
 ```
-c.
+c. Make all to compile the kernel module and install it on the system
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ sudo make all
 Makefile:17: XVC_FLAGS: .
@@ -124,19 +135,16 @@ warning: the compiler differs from the one used to build the kernel
 Skipping BTF generation for /home/dipen/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma/xdma.ko due to unavailability of vmlinux
 make[1]: Leaving directory '/usr/src/linux-headers-6.8.0-138-generic'
 ```
-c.
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ sudo depmod
-```
-d.
+
+d. List the files 
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ ls
 cdev_bypass.c  cdev_ctrl.h    cdev_events.o  cdev_sgdma.o  cdev_xvc.o  libxdma.o      Module.symvers  xdma_cdev.c  xdma.ko     xdma_mod.c  xdma_mod.o     xdma_thread.h
 cdev_bypass.o  cdev_ctrl.o    cdev_sgdma.c   cdev_xvc.c    libxdma.c   Makefile       sudo            xdma_cdev.h  xdma.mod    xdma_mod.h  xdma.o         xdma_thread.o
 cdev_ctrl.c    cdev_events.c  cdev_sgdma.h   cdev_xvc.h    libxdma.h   modules.order  version.h       xdma_cdev.o  xdma.mod.c  xdma.mod.o  xdma_thread.c
 ```
-d.
-```
+e. Navigate to the tests directory
+```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/xdma$ cd ..
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ ls
 COPYING  include  LICENSE  readme.txt  RELEASE  tests  tools  xdma
@@ -144,7 +152,7 @@ dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ cd tests/
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ ls
 data  dma_memory_mapped_test.sh  dma_streaming_test.sh  load_driver.sh  perform_hwcount.sh  run_test.sh  scripts_mm
 ```
-e.
+f. Load the XDMA driver onto the FPGA
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ sudo ./load_driver.sh
 interrupt_selection .
@@ -154,86 +162,22 @@ Loading driver...insmod xdma.ko interrupt_mode=2 ...
 The Kernel module installed correctly and the xmda devices were recognized.
 DONE
 ```
-### The XDMA driver was loaded.
+#### The XDMA driver was loaded.
 
-### See the available XDMA endpoints
+#### See the available XDMA endpoints
+Run ```sudo depmod``` to generates a list of kernel module dependencies and map files in Linux
+```bash
+dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ sudo depmod
+```
+
 ```bash
 dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ ls /dev/xdma*
 /dev/xdma0_c2h_0     /dev/xdma0_events_1   /dev/xdma0_events_12  /dev/xdma0_events_15  /dev/xdma0_events_4  /dev/xdma0_events_7  /dev/xdma0_h2c_0
 /dev/xdma0_control   /dev/xdma0_events_10  /dev/xdma0_events_13  /dev/xdma0_events_2   /dev/xdma0_events_5  /dev/xdma0_events_8  /dev/xdma0_user
 /dev/xdma0_events_0  /dev/xdma0_events_11  /dev/xdma0_events_14  /dev/xdma0_events_3   /dev/xdma0_events_6  /dev/xdma0_events_9  /dev/xdma0_xvc
 ```
-## Test if the everything else is working till now by blinking the on-board LEDs
-a.
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tests$ cd ..
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ ls
-COPYING  include  LICENSE  readme.txt  RELEASE  tests  tools  xdma
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel$ cd tools/
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ ls
-dma_from_device    dma_from_device.o  dma_to_device.c  dma_utils.c  performance    performance.o  reg_rw.c  test_chrdev    test_chrdev.o
-dma_from_device.c  dma_to_device      dma_to_device.o  Makefile     performance.c  reg_rw         reg_rw.o  test_chrdev.c
-```
-### The LED address may be different for you. Refer to the memory address editor to see the addresses assigned to the on-board LEDs. NOTE: Refer to the address in the PCIe BARs page of the DMA PCIE IP Block. The PCIe to AXI translation value + size determine what addresses you can assign to the LEDs and other peripherals mapped under the AXI-Lite interface of the PCIe DMA IP block. Refer to ```block-design-2-address-editor``` image to see a valid address mapping. Apparently, when using the XDMA drivers (xdma0_user) for testing, you can use the assigned address, or subtract the offset (0x4000_0000) in this tutorial's case.
-b. 
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./reg_rw /dev/xdma0_user 0x4000_0000 w 0x7
-device: /dev/xdma0_user, address: 0x4000 (0x4000+0x0), access write.
-access width: word (32-bits)
-character device /dev/xdma0_user opened.
-Memory 0x4000 mapped at address 0x71a1b1b5c000.
-Write 32-bits value 0x00000007 to 0x4000 (0x0x71a1b1b5c000)
-```
+### Refer to the [README in vivado-projects](vivado-projects/README.md) to test the project, such as toggling LEDs. 
 
-c.
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./reg_rw /dev/xdma0_user 0x4000_0000 w 0x0
-device: /dev/xdma0_user, address: 0x4000 (0x4000+0x0), access write.
-access width: word (32-bits)
-character device /dev/xdma0_user opened.
-Memory 0x4000 mapped at address 0x730858462000.
-Write 32-bits value 0x00000000 to 0x4000 (0x0x730858462000)
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$
-```
-## Testing DDR3
-### Channel 0
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ dd if=/dev/urandom of=pattern.bin bs=1M count=16
-16+0 records in
-16+0 records out
-16777216 bytes (17 MB, 16 MiB) copied, 0.03718 s, 451 MB/s
-```
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_to_device -d /dev/xdma0_h2c_0 -a 0x80000000 -s 16777216 -f pattern.bin
-/dev/xdma0_h2c_0 ** Average BW = 16777216, 1328.138062
-```
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_from_device -d /dev/xdma0_c2h_0 -a 0x80000000 -s 16777216 -f readback.bin
-/dev/xdma0_c2h_0 ** Average BW = 16777216, 677.586548
-```
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ diff pattern.bin readback.bin && echo "DDR3 CH0: PASS"
-DDR3 CH0: PASS
-```
 
-### Channel 1
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ dd if=/dev/urandom of=pattern.bin bs=1M count=16
-16+0 records in
-16+0 records out
-16777
-```
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_to_device -d /dev/xdma0_h2c_0 -a 0x00000000 -s 16777216 -f pattern.bin
-/dev/xdma0_h2c_0 ** Average BW = 16777216, 1310.044678
-```
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ sudo ./dma_from_device -d /dev/xdma0_c2h_0 -a 0x00000000 -s 16777216 -f readback_ch1.bin
-/dev/xdma0_c2h_0 ** Average BW = 16777216, 725.923401
-```
-```bash
-dipen@dipen-ubuntu-mate:~/Downloads/dma_ip_drivers/XDMA/linux-kernel/tools$ diff pattern.bin readback_ch1.bin && echo "DDR3 CH1: PASS"
-DDR3 CH1: PASS
-```
 
 
