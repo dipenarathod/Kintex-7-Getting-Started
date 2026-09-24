@@ -7,6 +7,9 @@ Credits to Tiferking's work for making this repository possible. Links to their 
 - https://github.com/TiferKing/ypcb_00338_1p1_hack
 - https://www.tiferking.cn/index.php/2024/12/19/650/
 
+**Vivado Version** - 2020.1
+[**Exact Card AliExpress Link**](https://www.aliexpress.com/item/1005012623638809.html?gps-id=platformRecommendH5ForSpider&scm=1007.10668.432016.0&scm_id=1007.10668.432016.0&scm-url=1007.10668.432016.0&pvid=f773bfc4-7437-4d58-ac77-78fcdfdb7e29&_t=gps-id%3AplatformRecommendH5ForSpider%2Cscm-url%3A1007.10668.432016.0%2Cpvid%3Af773bfc4-7437-4d58-ac77-78fcdfdb7e29%2Ctpp_buckets%3A668%232846%238112%231997&pdp_ext_f=%7B%22order%22%3A%22-1%22%2C%22eval%22%3A%221%22%2C%22sceneId%22%3A%228499%22%2C%22fromPage%22%3A%22recommend%22%7D&pdp_npi=6%40dis%21USD%2154.12%2154.12%21%21%21363.68%21363.68%21%402101c28d17858653472106690e0ed7%2112000058851155186%21rec%21CA%21%21AB%211%210%21&utparam-url=scene%3AplatformRecommendH5ForSpider%7Cquery_from%3A%7Cx_object_id%3A1005012623638809%7C_p_origin_prod%3A) - You can find this card for cheaper prices. This was the quickest link I could find.
+[**Xilinx Platform Cable USB II**](https://www.aliexpress.com/item/32810890902.html?spm=a2g0o.productlist.main.48.43926f9aBbyTQY&algo_pvid=d2511539-fc8f-4aab-bd17-12b815112b3a&algo_exp_id=d2511539-fc8f-4aab-bd17-12b815112b3a-47&pdp_ext_f=%7B%22order%22%3A%22286%22%2C%22spu_best_type%22%3A%22price%22%2C%22eval%22%3A%221%22%2C%22fromPage%22%3A%22search%22%7D&pdp_npi=6%40dis%21INR%213480.38%212610.54%21%21%2134.57%2125.93%21%40210159d417902387972804945e125c%2164548542145%21sea%21IN%210%21ABX%211%210%21n_tag%3A-29910%3Bd%3A309d292d%3Bm03_new_user%3A-29895&curPageLogUid=ZjdCysHg4Qqo&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A32810890902%7C_p_origin_prod%3A) - Again, the quickest link I could find.
 
 ## What to do After Installing the FPGA Card
 
